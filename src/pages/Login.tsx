@@ -11,18 +11,15 @@ export default function Login() {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: (creds: { username: string; password: string }) =>
-      api.post('/token/', creds).then(res => res.data),
-    onSuccess: (data) => {
-      localStorage.setItem('access', data.access);
-      localStorage.setItem('refresh', data.refresh);
+    mutationFn: (creds) => api.post('/token/', creds),
+    onSuccess: (tokenData) => {
+      localStorage.setItem('access', tokenData.data.access);
       api.get('/users/me/').then(res => {
         setUser(res.data);
         navigate('/dashboard');
       });
-    },
+    }
   });
-
   return (
     <Box sx={{ maxWidth: 400, mx: 'auto', mt: 8 }}>
       <Typography variant="h4" gutterBottom>Login</Typography>

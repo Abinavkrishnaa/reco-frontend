@@ -1,42 +1,28 @@
-// src/App.tsx
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material';
-import { useAuthStore, useThemeStore } from './store';
-import {
-  Landing,
-  Login,
-  Register,
-  Dashboard,
-  Profile,
-  AdminDashboard,
-  NotFound
-} from './pages';
-import { Navbar, RequireAuth, AdminRoute } from './components';
-
-function App() {
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useThemeStore } from './store/useThemeStore';
+import Navbar from './pages/Navbar';
+import RequireAuth from './components/auth/RequireAuth';
+import AdminRoute from './components/auth/AdminRoute';
+import Landing from './pages/Landing';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import AdminDashboard from './pages/Admin';
+import NotFound from './pages/NotFound';
+export default function App() {
   const { darkMode } = useThemeStore();
-  const { user } = useAuthStore();
-  
   const theme = createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
     },
-    components: {
-      MuiAppBar: {
-        styleOverrides: {
-          colorDefault: {
-            backgroundColor: darkMode ? '#1e1e1e' : '#ffffff',
-          }
-        }
-      }
-    }
   });
 
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        {user && <Navbar />}
+        <Navbar />
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
@@ -51,7 +37,6 @@ function App() {
             </Route>
           </Route>
 
-          {/* Error Routes */}
           <Route path="/404" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
@@ -59,5 +44,3 @@ function App() {
     </ThemeProvider>
   );
 }
-
-export default App;

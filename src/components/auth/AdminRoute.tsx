@@ -5,7 +5,7 @@ export default function AdminRoute({ children }: { children: JSX.Element }) {
   const location = useLocation();
   const { user } = useAuthStore();
 
-  if (!user?.isAdmin) {
+  if (!user?.is_staff) {
     return <Navigate to="/dashboard" state={{ from: location }} replace />;
   }
 

@@ -1,17 +1,24 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
-type AuthState={
-    user:null | { id: number; username: string; isAdmin: boolean; };
-    setUser:(user:AuthState['user'])=>void;
-    logout:()=>void;
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  is_staff: boolean;
+}
+
+interface AuthState {
+  user: User | null;
+  setUser: (user: User) => void;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-    user: null,
-    setUser: (user) => set({ user }),
-    logout: () => {
-        localStorage.removeItem('access');
-        localStorage.removeItem('refresh');
-        set({ user: null });
-    },
+  user: null,
+  setUser: (user) => set({ user }),
+  logout: () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    set({ user: null });
+  },
 }));
